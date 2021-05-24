@@ -8,19 +8,32 @@ def solution(orders, course):
         for idx_l in range(2, len(order_list)+2):
             element = list(map(''.join, combinations(order_list, idx_l)))
             comb_list.extend(element)
+    
     comb_list = sorted(comb_list)
     comb_list = sorted(comb_list, key=len)
-    print('comb_list: ', comb_list)
+    
     comb_set = sorted(list(set(comb_list)))
     comb_set = sorted(comb_set, key=len)
-    print('comb_set: ', comb_set)
-    comb_dict = defaultdict(int)
-    cnt = 0
+    
+    comb_dict = {}
+    for c in course:
+        comb_dict[c] = defaultdict(lambda:0)
+    
     for comb1 in comb_set:
         for comb2 in comb_list:
             if comb1 == comb2:
-                comb_dict[comb1] += 1
-    print('comb_dict: ', comb_dict)
+                if len(comb1) in list(comb_dict.keys()):
+                    comb_dict[len(comb1)][comb1] += 1
     
     answer = []
+    for c in course:
+        if list(comb_dict[c].values()) != []:
+            max_val = max(list(comb_dict[c].values()))
+            if max_val > 1:
+                for idx, val in enumerate(list(comb_dict[c].values())):
+                    if max_val == val:
+                        answer.append(list(comb_dict[c].keys())[idx])
+    
+    answer = sorted(answer, reverse=False)
+    
     return answer
