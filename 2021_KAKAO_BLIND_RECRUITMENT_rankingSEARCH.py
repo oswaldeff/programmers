@@ -1,81 +1,26 @@
-# def solution(info, query):
-#     applicants_graph = {}
-#     for idx, i in enumerate(info):
-#         applicants_graph[idx] = {}
-#         applicants_graph[idx]["language"] = i.split(" ")[0]
-#         applicants_graph[idx]["position"] = i.split(" ")[1]
-#         applicants_graph[idx]["career"] = i.split(" ")[2]
-#         applicants_graph[idx]["soulfood"] = i.split(" ")[3]
-#         applicants_graph[idx]["score"] = i.split(" ")[4]
-        
-#     answer = []
-#     for q in query:
-#         applicants = [x for x in range(len(info))]
-#         passers = []
-#         data = (q.replace(" and ", " ")).split(" ")
-#         while applicants:
-#             applicant = applicants.pop(0)
-#             if data[0] != '-' and applicants_graph[applicant]["language"] != data[0]:
-#                 continue
-#             if data[1] != '-' and applicants_graph[applicant]["position"] != data[1]:
-#                 continue
-#             if data[2] != '-' and applicants_graph[applicant]["career"] != data[2]:
-#                 continue
-#             if data[3] != '-' and applicants_graph[applicant]["soulfood"] != data[3]:
-#                 continue
-#             if int(applicants_graph[applicant]["score"]) < int(data[4]):
-#                 continue
-#             else:
-#                 passers.append(applicant)
-#         answer.append(len(passers))
-#     return answer
-
 from collections import defaultdict
+from itertools import combinations
 def solution(info, query):
-    classification_graph = defaultdict(list)
-    classification_graph['-'] = [x for x in range(len(info))]
+    persons = list(range(len(info)))
+    print(persons)
+    applicants_group = defaultdict(list)
     for idx, i in enumerate(info):
-        classification_graph[i.split(" ")[0]].append(idx)
-        classification_graph[i.split(" ")[1]].append(idx)
-        classification_graph[i.split(" ")[2]].append(idx)
-        classification_graph[i.split(" ")[3]].append(idx)
-        classification_graph[idx].append(i.split(" ")[4])
-    #print(classification_graph)
-    applicants = []
+        applicant_info = i.split(" ")
+        for j in range(len(applicant_info)):
+            comb = list(map("".join, combinations(applicant_info, j)))
+            applicants_group[idx].extend(comb)
+    print(applicants_group)
+    
     answer = []
     for q in query:
+        q = q.replace(" and ", " ")
+        q = q.replace(" ", "")
+        q = q.replace("-", "")
         passers = []
-        data = (q.replace(" and ", " ")).split(" ")
-        #language: data[0]
-        #position: data[1]
-        #career: data[2]
-        #soulfood: data[3]
-        #score: data[4]
-        if data[0] != '-':
-            applicants.extend(classification_graph[data[0]])
-        if data[0] == '-':
-            if data[1] != '-':
-                applicants.extend(classification_graph[data[1]])
-            if data[1] == '-':
-                if data[2] != '-':
-                    applicants.extend(classification_graph[data[2]])
-                if data[2] == '-':
-                    if data[3] != '-':
-                        applicants.extend(classification_graph[data[3]])
-                    if data[3] == '-':
-                        applicants.extend(classification_graph['-'])
-        while applicants:
-            applicant = applicants.pop(0)
-            if data[1] != '-' and applicant not in classification_graph[data[1]]:
-                continue
-            if data[2] != '-' and applicant not in classification_graph[data[2]]:
-                continue
-            if data[3] != '-' and applicant not in classification_graph[data[3]]:
-                continue
-            if int(classification_graph[applicant][0]) < int(data[4]):
-                continue
-            else:
-                passers.append(applicant)
+        for person in persons:
+            print('person: ', person)
+            if q in applicants_group[person]:
+                passers.append(person)
         answer.append(len(passers))
     return answer
 
