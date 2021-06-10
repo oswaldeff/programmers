@@ -1,6 +1,9 @@
 def mix_scoville(scoville, K):
     cnt = 0
     while min(scoville) < K:
+        if len(scoville) == 1:
+            cnt = -1
+            break
         scoville.sort()
         min_degree = scoville[0]
         second_degree = scoville[1]
