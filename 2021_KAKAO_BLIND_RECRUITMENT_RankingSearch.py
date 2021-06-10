@@ -48,4 +48,5 @@ def solution(info, query):
             else:
                 cnt = 0
         answer.append(cnt)
+    
     return answer
