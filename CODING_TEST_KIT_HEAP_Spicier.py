@@ -4,14 +4,16 @@ def mix_scoville(scoville, K):
         if len(scoville) == 1:
             cnt = -1
             break
-        scoville.sort()
-        min_degree = scoville.pop(0)
-        second_degree = scoville.pop(0)
+        min_degree = min(scoville)
+        scoville.remove(min_degree)
+        second_degree = min(scoville)
+        scoville.remove(second_degree)
         mix_degree = min_degree+(second_degree*2)
         scoville.append(mix_degree)
         cnt += 1
     return cnt
 
 def solution(scoville, K):
+    scoville.sort()
     answer = mix_scoville(scoville, K)
     return answer
