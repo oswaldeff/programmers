@@ -2,7 +2,7 @@ import heapq as hq
 
 def mix_scoville(scoville, K):
     cnt = 0
-    while min(scoville) < K:
+    while scoville[0] < K:
         if len(scoville) == 1:
             cnt = -1
             break
@@ -17,3 +17,5 @@ def solution(scoville, K):
     hq.heapify(scoville)
     answer = mix_scoville(scoville, K)
     return answer
+
+# error point: when use 'min' and 'sort'
