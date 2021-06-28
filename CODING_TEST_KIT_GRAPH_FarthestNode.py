@@ -8,12 +8,21 @@ def solution(n, edge):
     print(graph)
     
     nodes = [x for x in range(1, n+1)]
-    print(nodes)
+    offset = None
+    limit = None
+    print(nodes[offset:limit])
     
-    # for node in nodes:
-    #     visited = dq()
-    #     while visited != graph[node]:
-    #         start_node = graph[node].popleft()
+    for node in nodes:
+        visited = []
+        while True:
+            present_node = int(node)
+            visited.append(present_node)
+            previous_node = int(present_node) 
+            present_node = graph[present_node].popleft()
+            if len(graph[present_node]) > 0:
+                graph[previous_node].appendleft(present_node)
+            visited.append(present_node)
+            
             
     answer = 0
     return answer
